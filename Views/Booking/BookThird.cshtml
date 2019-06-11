@@ -1,0 +1,131 @@
+﻿@model IEnumerable<busSystem_v8.Models.Booking>
+
+@{
+    ViewBag.Title = "BookThird";
+}
+
+<h2>Display Booking Data </h2>
+
+
+<table class="table  table-responsive table-hover table table-striped ">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.users.Name)
+        </th>
+
+        <th>
+            @Html.DisplayNameFor(model => model.lines.From)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.lines.To)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.payment_types.pay_type)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Buses.DriverName)
+        </th>
+
+        <th>
+            @Html.DisplayNameFor(model => model.trips.StartDate)
+        </th>
+
+        <th>
+            @Html.DisplayNameFor(model => model.chosenChairs)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.TotalCost)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.trips.EndDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.users.wallet)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr id="record_@item.BokkingID" >
+            <td>
+                @Html.DisplayFor(modelItem => item.users.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.lines.From)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.lines.To)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.payment_types.pay_type)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Buses.DriverName)
+            </td>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.trips.StartDate)
+            </td>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.chosenChairs)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TotalCost)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.trips.EndDate)
+            </td>
+            <th>
+                @Html.DisplayFor(model => item.users.wallet)
+            </th>
+            <td>
+                @Html.ActionLink("Edit Booking", "EditBook", new { id = item.BokkingID }, new { @class = "btn btn-success" }) |
+                @Html.ActionLink("Booking Details ", "BookDetailsNew", new { id = item.BokkingID }, new { @class = "btn btn-success" }) |
+                <a href="~/PaypalHome/Index"  class = "btn btn-btn-default" >Pay by Paypal</a>
+                @*@Html.ActionLink("Delete Booking", "DeleteBook", new { id = item.BokkingID }, new { @class = "btn btn-danger" })*@
+                <button type="button" class="btn btn-danger" id="delete" onclick="DeleteBooking(@item.BokkingID)" >Delete</button>
+            </td>
+        </tr>
+    }
+
+</table>
+
+<p style="text-align:center;font-size:25px;">
+    @Html.ActionLink("Create New Booking ", "New")
+</p>
+
+
+@section Scripts{
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <script>
+        function DeleteBooking(id){
+            if(confirm("Are You Sure ?!")){
+        $.ajax({
+            type: "GET",
+            url: "/Booking/DeleteBook/"+id,
+            success: function (response) {
+                if(response.result==1)
+                {
+                    $("#record_" + id).remove();
+
+                    //alert("Deleted Well")
+                    //$("#success").slideUp(1000);
+                }
+                else{
+                    alert("Deleted Failed")
+                    //$("#fail").slideDown(2000);
+                    //$("#fail").slideUp(1000);
+                }
+
+            }
+        
+            
+        })
+            }
+        }
+    </script>
+}
